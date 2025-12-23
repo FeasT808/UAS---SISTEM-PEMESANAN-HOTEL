@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% block title %}Daftar Booking - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h1 class="display-6 fw-bold">
+            <i class="bi bi-calendar-check"></i> Daftar Booking
+        </h1>
+    </div>
+    <div class="col-md-6 text-end">
+        <a href="{{ url_for('add_booking') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Buat Booking
+        </a>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-body">
+        {% if bookings %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Kamar</th>
+                        <th>Nama Tamu</th>
+                        <th>Telepon</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Malam</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in bookings %}
+                    <tr>
+                        <td><strong>{{ item.booking.booking_id }}</strong></td>
+                        <td>
+                            {% if item.room %}
+                            {{ item.room.get_room_type() }} - {{ item.room.room_number }}
+                            {% else %}
+                            N/A
+                            {% endif %}
+                        </td>
+                        <td>{{ item.booking._guest_name }}</td>
+                        <td>{{ item.booking._guest_phone }}</td>
+                        <td>{{ item.booking._check_in }}</td>
+                        <td>{{ item.booking._check_out }}</td>
+                        <td>{{ item.booking._nights }}</td>
+                        <td>Rp {{ "{:,.0f}".format(item.booking._total_price) }}</td>
+                        <td>
+                            {% if item.booking.status == 'active' %}
+                            <span class="badge bg-success">Aktif</span>
+                            {% elif item.booking.status == 'completed' %}
+                            <span class="badge bg-primary">Selesai</span>
+                            {% elif item.booking.status == 'cancelled' %}
+                            <span class="badge bg-danger">Dibatalkan</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ item.booking.status }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <a href="{{ url_for('booking_detail', booking_id=item.booking.booking_id) }}" 
+                               class="btn btn-sm btn-info" title="Detail">
+                                <i class="bi bi-eye"></i>
+                            </a>
+                            <a href="{{ url_for('edit_booking', booking_id=item.booking.booking_id) }}" 
+                               class="btn btn-sm btn-warning" title="Edit">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <form method="POST" action="{{ url_for('delete_booking', booking_id=item.booking.booking_id) }}" 
+                                  style="display: inline;" onsubmit="return confirm('Yakin ingin menghapus booking ini?')">
+                                <button type="submit" class="btn btn-sm btn-danger" title="Hapus">
+                                    <i class="bi bi-trash"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="text-center my-5">
+            <i class="bi bi-inbox" style="font-size: 5rem; opacity: 0.3;"></i>
+            <p class="text-muted mt-3">Belum ada booking</p>
+            <a href="{{ url_for('add_booking') }}" class="btn btn-primary mt-3">
+                <i class="bi bi-plus-circle"></i> Buat Booking Pertama
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

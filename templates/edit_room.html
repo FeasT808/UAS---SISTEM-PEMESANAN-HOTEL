@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Kamar - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-pencil"></i> Edit Kamar
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Nomor Kamar</label>
+                        <input type="text" class="form-control" value="{{ room.room_number }}" disabled>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Tipe Kamar</label>
+                        <input type="text" class="form-control" value="{{ room.get_room_type() }}" disabled>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Harga per Malam</label>
+                        <input type="text" class="form-control" value="Rp {{ '{:,.0f}'.format(room.base_price) }}" disabled>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="is_available" class="form-label">Status Ketersediaan</label>
+                        <select class="form-select" id="is_available" name="is_available" required>
+                            <option value="true" {% if room.is_available %}selected{% endif %}>Tersedia</option>
+                            <option value="false" {% if not room.is_available %}selected{% endif %}>Tidak Tersedia</option>
+                        </select>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Simpan Perubahan
+                        </button>
+                        <a href="{{ url_for('rooms') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Batal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

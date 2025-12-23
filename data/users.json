@@ -1,0 +1,23 @@
+[
+    {
+        "user_id": "U001",
+        "username": "admin",
+        "password": "admin123",
+        "role": "admin",
+        "full_name": "Administrator Hotel"
+    },
+    {
+        "user_id": "U002",
+        "username": "tamu1",
+        "password": "tamu123",
+        "role": "tamu",
+        "full_name": "Budi Santoso"
+    },
+    {
+        "user_id": "U003",
+        "username": "tamu2",
+        "password": "tamu123",
+        "role": "tamu",
+        "full_name": "Siti Aminah"
+    }
+]

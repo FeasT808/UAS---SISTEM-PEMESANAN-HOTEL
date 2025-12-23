@@ -1,0 +1,123 @@
+[
+    {
+        "room_id": "R001",
+        "room_number": "101",
+        "room_type": "Standard",
+        "capacity": 2,
+        "base_price": 500000,
+        "is_available": true,
+        "amenities": [
+            "Single Bed",
+            "WiFi",
+            "TV",
+            "AC",
+            "Kamar Mandi"
+        ]
+    },
+    {
+        "room_id": "R002",
+        "room_number": "102",
+        "room_type": "Standard",
+        "capacity": 2,
+        "base_price": 500000,
+        "is_available": false,
+        "amenities": [
+            "Single Bed",
+            "WiFi",
+            "TV",
+            "AC",
+            "Kamar Mandi"
+        ]
+    },
+    {
+        "room_id": "R003",
+        "room_number": "201",
+        "room_type": "Deluxe",
+        "capacity": 3,
+        "base_price": 800000,
+        "is_available": true,
+        "amenities": [
+            "Queen Bed",
+            "WiFi Premium",
+            "Smart TV",
+            "AC",
+            "Kamar Mandi + Bathtub",
+            "Mini Bar",
+            "Balcony"
+        ]
+    },
+    {
+        "room_id": "R004",
+        "room_number": "202",
+        "room_type": "Deluxe",
+        "capacity": 3,
+        "base_price": 800000,
+        "is_available": false,
+        "amenities": [
+            "Queen Bed",
+            "WiFi Premium",
+            "Smart TV",
+            "AC",
+            "Kamar Mandi + Bathtub",
+            "Mini Bar",
+            "Balcony"
+        ]
+    },
+    {
+        "room_id": "R005",
+        "room_number": "301",
+        "room_type": "Suite",
+        "capacity": 4,
+        "base_price": 1500000,
+        "is_available": true,
+        "amenities": [
+            "King Bed",
+            "WiFi Premium",
+            "Smart TV 55\"",
+            "AC",
+            "Kamar Mandi Premium + Jacuzzi",
+            "Mini Bar Premium",
+            "Living Room",
+            "Balcony",
+            "Breakfast Included"
+        ]
+    },
+    {
+        "room_id": "R006",
+        "room_number": "302",
+        "room_type": "Suite",
+        "capacity": 4,
+        "base_price": 1500000,
+        "is_available": false,
+        "amenities": [
+            "King Bed",
+            "WiFi Premium",
+            "Smart TV 55\"",
+            "AC",
+            "Kamar Mandi Premium + Jacuzzi",
+            "Mini Bar Premium",
+            "Living Room",
+            "Balcony",
+            "Breakfast Included"
+        ]
+    },
+    {
+        "room_id": "R007",
+        "room_number": "1099",
+        "room_type": "Suite",
+        "capacity": 4,
+        "base_price": 1500000,
+        "is_available": true,
+        "amenities": [
+            "King Bed",
+            "WiFi Premium",
+            "Smart TV 55\"",
+            "AC",
+            "Kamar Mandi Premium + Jacuzzi",
+            "Mini Bar Premium",
+            "Living Room",
+            "Balcony",
+            "Breakfast Included"
+        ]
+    }
+]

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Tambah Kamar - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-plus-circle"></i> Tambah Kamar Baru
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="room_type" class="form-label">Tipe Kamar</label>
+                        <select class="form-select" id="room_type" name="room_type" required>
+                            <option value="">Pilih Tipe Kamar</option>
+                            <option value="Standard">Standard - Rp 500,000/malam (2 orang)</option>
+                            <option value="Deluxe">Deluxe - Rp 800,000/malam (3 orang)</option>
+                            <option value="Suite">Suite - Rp 1,500,000/malam (4 orang)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="room_number" class="form-label">Nomor Kamar</label>
+                        <input type="text" class="form-control" id="room_number" name="room_number" 
+                               placeholder="Contoh: 101, 102, 201" required>
+                    </div>
+                    
+                    <div class="alert alert-info">
+                        <strong><i class="bi bi-info-circle"></i> Info:</strong><br>
+                        <small>Kamar akan otomatis dibuat dengan status "Tersedia"</small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Simpan Kamar
+                        </button>
+                        <a href="{{ url_for('rooms') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Batal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

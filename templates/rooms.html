@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block title %}Daftar Kamar - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-6">
+        <h1 class="display-6 fw-bold">
+            <i class="bi bi-door-open"></i> Daftar Kamar
+        </h1>
+    </div>
+    <div class="col-md-6 text-end">
+        {% if user.is_admin() %}
+        <a href="{{ url_for('add_room') }}" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Tambah Kamar
+        </a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row">
+    {% for room in rooms %}
+    <div class="col-md-4 mb-4">
+        <div class="card h-100">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-door-closed"></i> {{ room.get_room_type() }} Room
+                </h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-muted">Nomor Kamar: <strong>{{ room.room_number }}</strong></h6>
+                <hr>
+                <p><i class="bi bi-people"></i> <strong>Kapasitas:</strong> {{ room.capacity }} orang</p>
+                <p><i class="bi bi-cash"></i> <strong>Harga:</strong> Rp {{ "{:,.0f}".format(room.base_price) }} /malam</p>
+                <p>
+                    <i class="bi bi-check-circle"></i> <strong>Status:</strong> 
+                    {% if room.is_available %}
+                    <span class="badge bg-success">Tersedia</span>
+                    {% else %}
+                    <span class="badge bg-danger">Terbooked</span>
+                    {% endif %}
+                </p>
+                
+                <hr>
+                <p class="mb-2"><strong>Fasilitas:</strong></p>
+                <ul class="list-unstyled">
+                    {% for amenity in room.get_amenities() %}
+                    <li><i class="bi bi-check2 text-success"></i> {{ amenity }}</li>
+                    {% endfor %}
+                </ul>
+                
+                {% if room.get_room_type() == 'Deluxe' %}
+                <div class="alert alert-info mt-3">
+                    <small><i class="bi bi-star"></i> Diskon 10% untuk booking >3 malam</small>
+                </div>
+                {% elif room.get_room_type() == 'Suite' %}
+                <div class="alert alert-warning mt-3">
+                    <small><i class="bi bi-star-fill"></i> Diskon 15% untuk booking >3 malam + Breakfast</small>
+                </div>
+                {% endif %}
+            </div>
+            {% if user.is_admin() %}
+            <div class="card-footer">
+                <a href="{{ url_for('edit_room', room_id=room.room_id) }}" class="btn btn-sm btn-warning">
+                    <i class="bi bi-pencil"></i> Edit
+                </a>
+                <form method="POST" action="{{ url_for('delete_room', room_id=room.room_id) }}" style="display: inline;" 
+                      onsubmit="return confirm('Yakin ingin menghapus kamar ini?')">
+                    <button type="submit" class="btn btn-sm btn-danger">
+                        <i class="bi bi-trash"></i> Hapus
+                    </button>
+                </form>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if not rooms %}
+<div class="text-center my-5">
+    <i class="bi bi-inbox" style="font-size: 5rem; opacity: 0.3;"></i>
+    <p class="text-muted mt-3">Belum ada kamar</p>
+</div>
+{% endif %}
+{% endblock %}

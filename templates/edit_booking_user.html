@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+
+{% block title %}Ubah Tanggal Booking - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="container" style="max-width: 600px;">
+    <h1 class="display-6 fw-bold mb-4">
+        <i class="bi bi-calendar"></i> Ubah Tanggal Booking
+    </h1>
+
+    <div class="card">
+        <div class="card-body">
+            <form method="POST">
+                <div class="mb-3">
+                    <label for="booking_id" class="form-label">Booking ID</label>
+                    <input type="text" class="form-control" id="booking_id" value="{{ booking.booking_id }}" disabled>
+                </div>
+
+                <div class="mb-3">
+                    <label for="guest_name" class="form-label">Nama Tamu</label>
+                    <input type="text" class="form-control" id="guest_name" value="{{ booking.guest_name }}" disabled>
+                </div>
+
+                <div class="mb-3">
+                    <label for="room_info" class="form-label">Kamar</label>
+                    <input type="text" class="form-control" id="room_info" 
+                           value="{% if room %}{{ room.get_room_type() }} - {{ room.room_number }}{% endif %}" disabled>
+                </div>
+
+                <hr>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="check_in" class="form-label">Check-in <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="check_in" name="check_in" 
+                                   value="{{ booking._check_in }}" required>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label for="check_out" class="form-label">Check-out <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="check_out" name="check_out" 
+                                   value="{{ booking._check_out }}" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="nights" class="form-label">Jumlah Malam</label>
+                    <input type="text" class="form-control" id="nights" value="{{ booking._nights }}" disabled>
+                </div>
+
+                <div class="mb-3">
+                    <label for="total_price" class="form-label">Total Harga</label>
+                    <input type="text" class="form-control" id="total_price" 
+                           value="Rp {{ '{:,.0f}'.format(booking._total_price) }}" disabled>
+                </div>
+
+                <div class="mb-3">
+                    <label for="notes" class="form-label">Catatan</label>
+                    <textarea class="form-control" id="notes" name="notes" rows="3">{{ booking.notes }}</textarea>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <a href="{{ url_for('bookings') }}" class="btn btn-secondary">
+                        <i class="bi bi-x-circle"></i> Batal
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-check-circle"></i> Simpan Perubahan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="alert alert-info mt-4">
+        <i class="bi bi-info-circle"></i> <strong>Info:</strong> Anda hanya dapat mengubah tanggal check-in dan check-out, serta menambah catatan. Untuk perubahan lainnya, hubungi admin.
+    </div>
+</div>
+{% endblock %}

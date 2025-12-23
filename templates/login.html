@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Login - Hotel Sedna{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Wrapper agar konten login adaptif di semua rasio layar */
+    .auth-shell {
+        min-height: 100vh;
+        display: grid;
+        align-items: center;
+        padding: 24px 16px 32px;
+        background: linear-gradient(135deg, rgba(0,0,0,0.45), rgba(0,0,0,0.25)),
+                    url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+    }
+
+    @media (min-width: 768px) {
+        .auth-shell {
+            padding: 48px 24px 64px;
+        }
+    }
+    
+    .login-container {
+        width: min(480px, 100%);
+        margin: 0 auto;
+    }
+    
+    .login-card {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 20px;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .login-header {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        padding: 36px 28px;
+        text-align: center;
+    }
+    
+    .login-header h2 {
+        margin: 0;
+        font-weight: bold;
+    }
+    
+    .login-header .icon {
+        font-size: 3.5rem;
+        margin-bottom: 16px;
+    }
+    
+    .login-body {
+        padding: 32px 28px;
+    }
+    
+    .form-control {
+        border-radius: 25px;
+        padding: 12px 20px;
+        border: 2px solid #e0e0e0;
+    }
+    
+    .form-control:focus {
+        border-color: #667eea;
+        box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+    }
+    
+    .btn-login {
+        width: 100%;
+        padding: 12px;
+        border-radius: 25px;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        color: white;
+        font-weight: bold;
+        transition: all 0.3s ease;
+    }
+    
+    .btn-login:hover {
+        transform: scale(1.02);
+        box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+    
+    .demo-info {
+        margin-top: 18px;
+        padding: 14px;
+        background: #f8f9fa;
+        border-radius: 15px;
+        font-size: 0.9rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-shell">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="icon">
+                    <i class="bi bi-building"></i>
+                </div>
+                <h2>Hotel Sedna</h2>
+                <p>Book Your Dream Room</p>
+            </div>
+            <div class="login-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="username" class="form-label">
+                            <i class="bi bi-person"></i> Username
+                        </label>
+                        <input type="text" class="form-control" id="username" name="username" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password" class="form-label">
+                            <i class="bi bi-lock"></i> Password
+                        </label>
+                        <input type="password" class="form-control" id="password" name="password" required>
+                    </div>
+                    <button type="submit" class="btn btn-login">
+                        <i class="bi bi-box-arrow-in-right"></i> Login
+                    </button>
+                </form>
+                
+                <div class="demo-info">
+                    <strong><i class="bi bi-info-circle"></i> Demo Accounts:</strong><br>
+                    <small>
+                        <strong>Admin:</strong> admin / admin123<br>
+                        <strong>Tamu:</strong> tamu1 / tamu123
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

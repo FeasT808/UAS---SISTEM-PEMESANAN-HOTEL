@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-5 fw-bold">
+            <i class="bi bi-speedometer2"></i> Dashboard
+        </h1>
+        <p class="lead">Selamat datang, {{ user.full_name }}!</p>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4 g-3">
+    <div class="col-sm-6 col-lg-3">
+        <div class="stats-card text-center">
+            <i class="bi bi-door-open stats-icon text-primary"></i>
+            <h3 class="mt-3 mb-0">{{ total_rooms }}</h3>
+            <p class="text-muted mb-0">Total Kamar</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stats-card text-center">
+            <i class="bi bi-check-circle stats-icon text-success"></i>
+            <h3 class="mt-3 mb-0">{{ available_rooms }}</h3>
+            <p class="text-muted mb-0">Kamar Tersedia</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stats-card text-center">
+            <i class="bi bi-calendar-check stats-icon text-info"></i>
+            <h3 class="mt-3 mb-0">{{ total_bookings }}</h3>
+            <p class="text-muted mb-0">Total Booking</p>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="stats-card text-center">
+            <i class="bi bi-clock-history stats-icon text-warning"></i>
+            <h3 class="mt-3 mb-0">{{ active_bookings }}</h3>
+            <p class="text-muted mb-0">Booking Aktif</p>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card mb-4">
+    <div class="card-header">
+        <i class="bi bi-lightning-charge"></i> Quick Actions
+    </div>
+    <div class="card-body">
+        <div class="row g-3">
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('rooms') }}" class="btn btn-primary w-100">
+                    <i class="bi bi-door-open"></i><br>
+                    Lihat Kamar
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('add_booking') }}" class="btn btn-success w-100">
+                    <i class="bi bi-plus-circle"></i><br>
+                    Buat Booking
+                </a>
+            </div>
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('bookings') }}" class="btn btn-info w-100">
+                    <i class="bi bi-list-check"></i><br>
+                    Lihat Booking
+                </a>
+            </div>
+            {% if user.is_admin() %}
+            <div class="col-6 col-md-3">
+                <a href="{{ url_for('add_room') }}" class="btn btn-warning w-100">
+                    <i class="bi bi-plus-square"></i><br>
+                    Tambah Kamar
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Recent Bookings -->
+<div class="card">
+    <div class="card-header">
+        <i class="bi bi-clock-history"></i> Booking Terbaru
+    </div>
+    <div class="card-body">
+        {% if recent_bookings %}
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>Nama Tamu</th>
+                        <th>Check-in</th>
+                        <th>Check-out</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in recent_bookings %}
+                    <tr>
+                        <td><strong>{{ booking.booking_id }}</strong></td>
+                        <td>{{ booking._guest_name }}</td>
+                        <td>{{ booking._check_in }}</td>
+                        <td>{{ booking._check_out }}</td>
+                        <td>Rp {{ "{:,.0f}".format(booking._total_price) }}</td>
+                        <td>
+                            {% if booking.status == 'active' %}
+                            <span class="badge bg-success">Aktif</span>
+                            {% elif booking.status == 'completed' %}
+                            <span class="badge bg-primary">Selesai</span>
+                            {% elif booking.status == 'cancelled' %}
+                            <span class="badge bg-danger">Dibatalkan</span>
+                            {% else %}
+                            <span class="badge bg-secondary">{{ booking.status }}</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="text-center text-muted my-4">Belum ada booking</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

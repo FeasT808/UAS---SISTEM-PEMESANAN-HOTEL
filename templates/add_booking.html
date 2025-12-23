@@ -1,0 +1,162 @@
+{% extends "base.html" %}
+
+{% block title %}Buat Booking - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-plus-circle"></i> Buat Booking Baru
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if rooms %}
+                <form method="POST">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="guest_name" class="form-label">Nama Tamu</label>
+                            <input type="text" class="form-control" id="guest_name" name="guest_name" 
+                                   placeholder="Nama lengkap tamu" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="guest_phone" class="form-label">Nomor Telepon</label>
+                            <input type="tel" class="form-control" id="guest_phone" name="guest_phone" 
+                                   placeholder="08xxxxxxxxxx" required>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label for="room_id" class="form-label">Pilih Kamar</label>
+                        <select class="form-select" id="room_id" name="room_id" required onchange="updatePriceInfo()">
+                            <option value="">-- Pilih Kamar --</option>
+                            {% for room in rooms %}
+                            <option value="{{ room.room_id }}" 
+                                    data-type="{{ room.get_room_type() }}"
+                                    data-number="{{ room.room_number }}"
+                                    data-price="{{ room.base_price }}"
+                                    data-amenities="{{ room.get_amenities()|join(', ') }}">
+                                {{ room.get_room_type() }} - Room {{ room.room_number }} 
+                                (Rp {{ "{:,.0f}".format(room.base_price) }}/malam)
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div id="roomInfo" class="alert alert-info" style="display: none;">
+                        <h6 class="alert-heading">Info Kamar</h6>
+                        <p id="roomDetails"></p>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="check_in" class="form-label">Tanggal Check-in</label>
+                            <input type="date" class="form-control" id="check_in" name="check_in" 
+                                   min="{{ today }}" value="{{ today }}" required onchange="calculateNights()">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="check_out" class="form-label">Tanggal Check-out</label>
+                            <input type="date" class="form-control" id="check_out" name="check_out" 
+                                   min="{{ tomorrow }}" value="{{ tomorrow }}" required onchange="calculateNights()">
+                        </div>
+                    </div>
+                    
+                    <div id="priceEstimate" class="alert alert-success" style="display: none;">
+                        <h6 class="alert-heading">Estimasi Biaya</h6>
+                        <p id="priceDetails"></p>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="bi bi-check-circle"></i> Buat Booking
+                        </button>
+                        <a href="{{ url_for('bookings') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Batal
+                        </a>
+                    </div>
+                </form>
+                {% else %}
+                <div class="text-center my-4">
+                    <i class="bi bi-exclamation-triangle" style="font-size: 3rem; opacity: 0.5;"></i>
+                    <p class="text-muted mt-3">Tidak ada kamar yang tersedia saat ini</p>
+                    <a href="{{ url_for('rooms') }}" class="btn btn-primary">
+                        <i class="bi bi-door-open"></i> Lihat Semua Kamar
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block extra_js %}
+<script>
+function updatePriceInfo() {
+    const select = document.getElementById('room_id');
+    const option = select.options[select.selectedIndex];
+    const roomInfo = document.getElementById('roomInfo');
+    const roomDetails = document.getElementById('roomDetails');
+    
+    if (option.value) {
+        const type = option.dataset.type;
+        const number = option.dataset.number;
+        const price = parseFloat(option.dataset.price);
+        const amenities = option.dataset.amenities;
+        
+        roomDetails.innerHTML = `
+            <strong>Tipe:</strong> ${type}<br>
+            <strong>Nomor:</strong> ${number}<br>
+            <strong>Harga:</strong> Rp ${price.toLocaleString('id-ID')}/malam<br>
+            <strong>Fasilitas:</strong> ${amenities}
+        `;
+        roomInfo.style.display = 'block';
+        
+        calculateNights();
+    } else {
+        roomInfo.style.display = 'none';
+    }
+}
+
+function calculateNights() {
+    const checkIn = document.getElementById('check_in').value;
+    const checkOut = document.getElementById('check_out').value;
+    const select = document.getElementById('room_id');
+    const option = select.options[select.selectedIndex];
+    const priceEstimate = document.getElementById('priceEstimate');
+    const priceDetails = document.getElementById('priceDetails');
+    
+    if (checkIn && checkOut && option.value) {
+        const date1 = new Date(checkIn);
+        const date2 = new Date(checkOut);
+        const nights = Math.ceil((date2 - date1) / (1000 * 60 * 60 * 24));
+        
+        if (nights > 0) {
+            const basePrice = parseFloat(option.dataset.price);
+            const type = option.dataset.type;
+            let total = basePrice * nights;
+            let discount = '';
+            
+            // Apply discounts based on room type
+            if (type === 'Deluxe' && nights > 3) {
+                total *= 0.9;
+                discount = ' (Diskon 10%)';
+            } else if (type === 'Suite' && nights > 3) {
+                total *= 0.85;
+                discount = ' (Diskon 15% + Breakfast)';
+            }
+            
+            priceDetails.innerHTML = `
+                <strong>Jumlah Malam:</strong> ${nights} malam<br>
+                <strong>Harga Dasar:</strong> Rp ${(basePrice * nights).toLocaleString('id-ID')}${discount}<br>
+                <strong>Total Biaya:</strong> <span class="fs-5 fw-bold">Rp ${total.toLocaleString('id-ID')}</span>
+            `;
+            priceEstimate.style.display = 'block';
+        } else {
+            priceEstimate.style.display = 'none';
+        }
+    }
+}
+</script>
+{% endblock %}
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block title %}System Logs - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <h1 class="display-6 fw-bold">
+            <i class="bi bi-file-text"></i> System Logs
+        </h1>
+        <p class="text-muted">Audit trail dan aktivitas sistem</p>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <i class="bi bi-clock-history"></i> Log Aktivitas (100 Terbaru)
+    </div>
+    <div class="card-body">
+        {% if logs %}
+        <div style="max-height: 600px; overflow-y: auto; font-family: 'Courier New', monospace; font-size: 0.9rem;">
+            {% for log in logs %}
+            <div class="p-2 border-bottom
+                {% if 'ERROR' in log %}bg-danger bg-opacity-10
+                {% elif 'FAILED' in log %}bg-warning bg-opacity-10
+                {% elif 'SUCCESS' in log or 'CREATE' in log %}bg-success bg-opacity-10
+                {% elif 'UPDATE' in log %}bg-info bg-opacity-10
+                {% elif 'DELETE' in log %}bg-danger bg-opacity-10
+                {% endif %}">
+                {{ log|safe }}
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="text-center my-5">
+            <i class="bi bi-inbox" style="font-size: 5rem; opacity: 0.3;"></i>
+            <p class="text-muted mt-3">Belum ada log aktivitas</p>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<div class="alert alert-info mt-3">
+    <h6 class="alert-heading"><i class="bi bi-info-circle"></i> Keterangan</h6>
+    <ul class="mb-0">
+        <li><strong>INFO</strong> - Informasi umum</li>
+        <li><strong>SUCCESS</strong> - Operasi berhasil</li>
+        <li><strong>FAILED</strong> - Operasi gagal</li>
+        <li><strong>CREATE</strong> - Data baru dibuat</li>
+        <li><strong>UPDATE</strong> - Data diupdate</li>
+        <li><strong>DELETE</strong> - Data dihapus</li>
+        <li><strong>ERROR</strong> - Error sistem</li>
+    </ul>
+</div>
+{% endblock %}

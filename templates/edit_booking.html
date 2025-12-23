@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Edit Booking - Hotel Sedna{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="bi bi-pencil"></i> Edit Booking
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">Booking ID</label>
+                    <input type="text" class="form-control" value="{{ booking.booking_id }}" disabled>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Kamar</label>
+                    <input type="text" class="form-control" 
+                           value="{% if room %}{{ room.get_room_type() }} - {{ room.room_number }}{% else %}N/A{% endif %}" disabled>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Nama Tamu</label>
+                    <input type="text" class="form-control" value="{{ booking._guest_name }}" disabled>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Check-in</label>
+                        <input type="text" class="form-control" value="{{ booking._check_in }}" disabled>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label">Check-out</label>
+                        <input type="text" class="form-control" value="{{ booking._check_out }}" disabled>
+                    </div>
+                </div>
+                
+                <div class="mb-3">
+                    <label class="form-label">Total Biaya</label>
+                    <input type="text" class="form-control" 
+                           value="Rp {{ '{:,.0f}'.format(booking._total_price) }}" disabled>
+                </div>
+                
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status Booking</label>
+                        <select class="form-select" id="status" name="status" required>
+                            <option value="active" {% if booking.status == 'active' %}selected{% endif %}>Aktif</option>
+                            <option value="completed" {% if booking.status == 'completed' %}selected{% endif %}>Selesai</option>
+                            <option value="cancelled" {% if booking.status == 'cancelled' %}selected{% endif %}>Dibatalkan</option>
+                        </select>
+                        <small class="text-muted">
+                            Note: Mengubah status ke "Selesai" atau "Dibatalkan" akan membuat kamar tersedia kembali
+                        </small>
+                    </div>
+                    
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save"></i> Simpan Perubahan
+                        </button>
+                        <a href="{{ url_for('bookings') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle"></i> Batal
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
