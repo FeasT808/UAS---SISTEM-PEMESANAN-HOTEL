@@ -68,3 +68,8 @@
 [2025-12-23 21:25:31] [DELETE] [admin] Booking B0002 dihapus
 [2025-12-23 21:25:39] [UPDATE] [admin] Kamar 1099 diupdate - Available: True
 [2025-12-23 21:25:39] [UPDATE] [admin] Booking B0003 status diupdate: active -> completed
+[2025-12-23 21:32:24] [INFO] [admin] User logout: admin
+[2025-12-23 21:32:30] [SUCCESS] [tamu1] Login berhasil untuk user: tamu1
+[2025-12-23 21:32:55] [UPDATE] [tamu1] Kamar 301 diupdate - Available: False
+[2025-12-23 21:32:55] [CREATE] [tamu1] Booking baru dibuat: B0003 untuk kamar 301
+[2025-12-23 21:33:11] [INFO] [tamu1] User logout: tamu1
